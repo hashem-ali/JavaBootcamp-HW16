@@ -50,3 +50,57 @@
  
 6. Update row from countries table.
 7. Delete row from products table.
+
+# Answers
+
+## Creating tables and Constrains
+create table countries(
+    code int primary key ,
+    name varchar(20) unique ,
+    continent_name varchar(20) not null
+);
+
+create table users(
+    id int primary key ,
+    full_name varchar(20),
+    email varchar(20) unique ,
+    gender char(1) check ( 'm' or 'f' ),
+    date_of_birth varchar(15) ,
+    country_code int,
+    created_at datetime  default datetime(),
+    foreign key (country_code) references countries(code)
+);
+
+create table orders(
+    id int primary key ,
+    status varchar(6) check ( 'start' or 'finish' ),
+    user_id int ,
+    created_at datetime,
+    foreign key (user_id) references users(id)
+);
+
+create table order_products(
+    order_id int primary key ,
+    product_id int ,
+    foreign key (product_id) references products(id),
+    quantity int default 0
+);
+
+create table products(
+    id int primary key ,
+    name varchar(10) not null ,
+    price int default 0,
+    status varchar(10) check ( 'valid' or 'expired' ),
+    created_at datetime
+);
+## DML commands
+insert into countries (code, name, continent_name) values (1, 'saudi', '966');
+
+insert into users (id, full_name, email, gender, date_of_birth, country_code) values (2, 'hashem ali', 'hashem@gmail.com', 'm', '2020', 1);
+
+insert into orders (id, status, user_id)
+values (2, 'start', 2);
+
+insert into order_products (order_id, product_id, quantity) VALUES (1, 2,3);
+
+insert into products (id, name, price, status) values (2, 'hashem', 33, 'valid')
